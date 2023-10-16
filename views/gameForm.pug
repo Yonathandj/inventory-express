@@ -1,0 +1,21 @@
+extends layout
+
+block content
+    form(action="" method="post" class="p-10") 
+        section(class="max-w-[80%] flex flex-col") 
+            label(for="name" class="text-xl") Game name
+            input(type="text" placeholder="Enter game name" id="name" name="name" value=(game===undefined ? '' : game.name) required="true" autoComplete="off" class="p-2 text-slate-800")
+        section(class="max-w-[80%] flex flex-col mt-2")
+            label(for="description" class="text-xl") Description 
+            textarea(name="description", cols="30", rows="10" id="description" required="true" class="p-2 text-slate-800") #{value=(game===undefined ? "" : game.description)}
+        section(class="max-w-[80%] flex flex-col mt-2") 
+            label(for="price" class="text-xl") Game price
+            input(type="number" placeholder="Enter game price" id="price" name="price" value=(game===undefined ? '' : game.price) required="true" autoComplete="off" class="p-2 text-slate-800")
+        section(class="max-w-[80%] flex gap-2 mt-2")   
+            label(for="categories" class="text-xl") #{categories.length > 1 ? "Categories : " : 'Category : ' } 
+            each category in categories
+                input(type="checkbox", name="categories" id=category._id value=category._id checked=category.checked)
+                label(for=category._id)= category.name 
+        button(type="submit" class="px-4 py-2 bg-sky-600 mt-2 p-2 rounded-sm") Create game
+
+    h2(class="text-lg text-red-600")= error
