@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    form(action="", method="post" class="p-5") 
+        section(class="max-w-[80%] flex flex-col gap-1")
+            label(for="name" class="text-xl") Category
+            input(type="text" id="name" placeholder="Enter category name" name="name" required="true" autoComplete="off" class="text-slate-800 p-2 rounded-sm")
+        section(class="max-w-[80%] flex flex-col gap-1")
+            label(for="description" class="text-xl") Description 
+            textarea(name="description", cols="30", rows="10" id="description" required="true" class="text-slate-800 p-2 rounded-sm") 
+        button(type="submit" class="px-4 py-2 bg-sky-600 mt-2 p-2 rounded-sm") Create category 

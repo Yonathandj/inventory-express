@@ -7,6 +7,7 @@ const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
 
 const indexRouter = require('./routes/index');
+const categoriesRouter = require("./routes/categories");
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/catalog', categoriesRouter);
 
 app.use(function (req, res, next) {
   next(createError(404));
