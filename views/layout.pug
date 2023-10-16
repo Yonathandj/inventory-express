@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title Inventory Games | Duncan
+    script(src="https://cdn.tailwindcss.com")
+    link(rel='stylesheet' href='/stylesheets/style.css')
+  body(class="bg-zinc-950 text-slate-200")
+    div(class="max-w-[1200px] mx-auto p-5")
+      header 
+        nav(class="flex justify-around items-center")
+          a(href="/" class="text-4xl font-bold") Duncan
+          ul(class="flex gap-5")
+            li 
+              a(href="/catalog/categories" class="text-lg") Categories
+            li 
+              a(href="/catalog/games" class="text-lg") Games
+      block content
