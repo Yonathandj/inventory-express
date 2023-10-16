@@ -1,7 +1,7 @@
 const { nanoid } = require("nanoid");
 
 const categoryModel = require("../models/categoriesModel");
-const invariantError = require("../error/invariantError");
+const invariantError = require("../errors/invariantError");
 
 async function postCategory({ name, description }) {
     const existingCategory = await categoryModel.findOne({ name }).exec();

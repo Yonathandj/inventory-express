@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 
 const indexRouter = require('./routes/index');
 const categoriesRouter = require("./routes/categories");
+const gamesRouter = require('./routes/games');
 
 main().catch(err => { throw new Error(err) });
 async function main() {
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/catalog', categoriesRouter);
+app.use('/catalog', gamesRouter);
 
 app.use(function (req, res, next) {
   next(createError(404));
