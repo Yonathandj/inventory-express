@@ -3,11 +3,17 @@ require('dotenv').config();
 const path = require('path');
 const logger = require('morgan');
 const express = require('express');
+const mongoose = require('mongoose');
 const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
 
 const indexRouter = require('./routes/index');
 const categoriesRouter = require("./routes/categories");
+
+main().catch(err => { throw new Error(err) });
+async function main() {
+  await mongoose.connect(process.env.MONGO_URI);
+}
 
 const app = express();
 

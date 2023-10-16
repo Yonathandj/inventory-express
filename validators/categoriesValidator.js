@@ -7,10 +7,10 @@ const categoryValidatorSchema = Joi.object({
     description: Joi.string().min(100).required(),
 })
 
-const categoryValidator = (req) => {
-    const { value, error } = categoryValidatorSchema.validate(req.body);
+const categoryValidator = ({ name, description }) => {
+    const { value, error } = categoryValidatorSchema.validate({ name, description });
     if (error) {
-        throw new invariantError(`${error.message}`, 400);
+        throw new invariantError(error.message, 400);
     }
 }
 

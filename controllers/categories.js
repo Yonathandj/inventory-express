@@ -1,5 +1,7 @@
 const categoryValidator = require("../validators/categoriesValidator");
 
+const { postCategory } = require("../services/categoriesService");
+
 function getCategoriesIndexPage(req, res) {
     res.render("categoriesIndexPage");
 }
@@ -7,9 +9,10 @@ function getCategoriesIndexPage(req, res) {
 function getFormCategory(req, res) {
     res.render("categoryForm");
 }
-function postFormCategory(req, res) {
+async function postFormCategory(req, res) {
     try {
-        categoryValidator(req);
+        categoryValidator(req.body);
+        await postCategory(req.body);
         res.redirect('/catalog/categories');
     } catch (error) {
         if (error.statusCode === 400)
