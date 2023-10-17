@@ -9,13 +9,15 @@ block content
             label(for="description" class="text-xl") Description 
             textarea(name="description", cols="30", rows="10" id="description" required="true" class="p-2 text-slate-800") #{value=(game===undefined ? "" : game.description)}
         section(class="max-w-[80%] flex flex-col mt-2") 
-            label(for="price" class="text-xl") Game price
+            label(for="price" class="text-xl") Price
             input(type="number" placeholder="Enter game price" id="price" name="price" value=(game===undefined ? '' : game.price) required="true" autoComplete="off" class="p-2 text-slate-800")
-        section(class="max-w-[80%] flex gap-2 mt-2")   
-            label(for="categories" class="text-xl") #{categories.length > 1 ? "Categories : " : 'Category : ' } 
-            each category in categories
-                input(type="checkbox", name="categories" id=category._id value=category._id checked=category.checked)
-                label(for=category._id)= category.name 
+        section(class="max-w-[80%] flex items-center gap-2 mt-2") 
+            label(for="categories" class="text-xl") List category : 
+            if categories
+                each category in categories
+                    input(type="checkbox", name="categories" id=category._id value=category._id checked=category.checked)
+                    label(for=category._id)= category.name 
         button(type="submit" class="px-4 py-2 bg-sky-600 mt-2 p-2 rounded-sm") Create game
 
-    h2(class="text-lg text-red-600")= error
+    if error
+        h2(class="text-lg text-red-600")= error
