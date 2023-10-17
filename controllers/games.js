@@ -1,6 +1,6 @@
 const gameValidator = require("../validators/gamesValidator");
 
-const { postGame, getGamesData, getGameById } = require("../services/gamesService");
+const { postGame, getGamesData, getGameById, deleteGameById } = require("../services/gamesService");
 const { getCategoriesData } = require("../services/categoriesService");
 
 
@@ -63,10 +63,19 @@ async function getGamesDetailPage(req, res) {
     }
 }
 
+async function deleteGame(req, res) {
+    try {
+        await deleteGameById(req.params.id);
+        res.redirect('/catalog/games');
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
 module.exports = {
     getGamesIndexPage,
     getGameForm,
     postGameForm,
-    getGamesDetailPage
-
+    getGamesDetailPage,
+    deleteGame
 }

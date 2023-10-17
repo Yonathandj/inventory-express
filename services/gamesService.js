@@ -42,13 +42,17 @@ async function getGamesRelatedCategory(_id) {
 
 async function getGameById(_id) {
     const game = await gameModel.findOne({ _id }).populate('categories').exec();
-    console.log(game);
     return game;
+}
+
+async function deleteGameById(_id) {
+    await gameModel.deleteOne({ _id }).exec();
 }
 
 module.exports = {
     getGamesData,
     postGame,
     getGamesRelatedCategory,
-    getGameById
+    getGameById,
+    deleteGameById
 }

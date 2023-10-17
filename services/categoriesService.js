@@ -35,12 +35,7 @@ async function postCategory({ name, description }) {
 }
 
 async function deleteCategoryById(_id) {
-    const gamesRelatedToCategory = await gameModel.find({ categories: _id }).exec();
-    if (gamesRelatedToCategory.length > 0) {
-        throw new invariantError('There are games related to this category. You can delete those games first', 400);
-    }
     await categoryModel.deleteOne({ _id }).exec();
-
 }
 
 async function getCategoryById(_id) {
