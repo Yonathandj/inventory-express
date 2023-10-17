@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getCategoriesIndexPage, getFormCategory, postFormCategory, getCategoryDetailPage, deleteCategory } = require('../controllers/categories');
+const { getCategoriesIndexPage, getFormCategory, postFormCategory, getCategoryDetailPage, deleteCategory, getFormUpdateCategory, postUpdateCategory } = require('../controllers/categories');
 
 router.get('/categories', getCategoriesIndexPage);
 router.route('/categories/new')
@@ -11,5 +11,7 @@ router.route('/categories/new')
 router.get('/categories/:id', getCategoryDetailPage);
 
 router.post('/categories/delete/:id', deleteCategory);
+router.get('/categories/update/:id', getFormUpdateCategory)
+router.post('/categories/post-update/:id', postUpdateCategory)
 
 module.exports = router;

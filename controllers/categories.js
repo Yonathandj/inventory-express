@@ -1,6 +1,6 @@
 const categoryValidator = require("../validators/categoriesValidator");
 
-const { postCategory, getCategoriesData, getCategoryDetailData, deleteCategoryById } = require("../services/categoriesService");
+const { postCategory, getCategoriesData, getCategoryDetailData, deleteCategoryById, getCategoryById, updateCategory } = require("../services/categoriesService");
 
 async function getCategoriesIndexPage(req, res) {
     try {
@@ -16,6 +16,7 @@ async function getCategoriesIndexPage(req, res) {
 function getFormCategory(req, res) {
     res.render("categoryForm");
 }
+
 async function postFormCategory(req, res) {
     try {
         categoryValidator(req.body);
@@ -48,10 +49,34 @@ async function deleteCategory(req, res) {
     }
 }
 
+async function getFormUpdateCategory(req, res) {
+    try {
+        const category = await getCategoryById(req.params.id);
+        res.render('categoryForm', { category, url: `catalog/categories/post-update/${category._id}` })
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
+async function postUpdateCategory(req, res) {
+    try {
+        categoryValidator(req.body);
+
+        const data = { _id: req.params.id, name: req.body.name, description: req.body.description }
+        await updateCategory(data);
+        res.redirect('/catalog/categories');
+    } catch (error) {
+        if (error.statusCode === 400)
+            return res.render("categoryForm", { category: req.body, error: error.message });
+    }
+}
+
 module.exports = {
     getCategoriesIndexPage,
     getFormCategory,
     postFormCategory,
     getCategoryDetailPage,
-    deleteCategory
+    deleteCategory,
+    getFormUpdateCategory,
+    postUpdateCategory
 }
