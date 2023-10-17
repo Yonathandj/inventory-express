@@ -1,16 +1,25 @@
 const gameValidator = require("../validators/gamesValidator");
 
-const { getGameFormDataCategories, postGame } = require("../services/gamesService");
+const { postGame, getGamesData, getGameById } = require("../services/gamesService");
+const { getCategoriesData } = require("../services/categoriesService");
 
 
-function getGamesIndexPage(req, res) {
-    res.render("gamesIndexPage");
+async function getGamesIndexPage(req, res) {
+    try {
+        const games = await getGamesData();
+        res.render("gamesIndexPage", { games });
+    } catch (error) {
+        if (error.statusCode === 404) {
+            res.render("gamesIndexPage", { error: error.message });
+
+        }
+    }
 }
 
 async function getGameForm(req, res) {
     try {
-        const categoriesList = await getGameFormDataCategories();
-        res.render('gameForm', { categories: categoriesList });
+        const categories = await getCategoriesData();
+        res.render('gameForm', { categories });
     } catch (error) {
         if (error.statusCode === 404) {
             return res.render("gameForm", { error: error.message })
@@ -27,7 +36,7 @@ async function postGameForm(req, res) {
     } catch (error) {
         if (error.statusCode === 400) {
             try {
-                const categoriesList = await getGameFormDataCategories();
+                const categoriesList = await getCategoriesData();
                 if (req.body.categories) {
                     for (category of categoriesList) {
                         if (req.body.categories.includes(category._id)) {
@@ -37,9 +46,20 @@ async function postGameForm(req, res) {
                 }
                 return res.render('gameForm', { game: req.body, error: error.message, categories: categoriesList });
             } catch (error) {
-                return res.render("gameForm", { error: error.message, game: req.body })
+                if (error.statusCode === 404) {
+                    return res.render("gameForm", { error: error.message, game: req.body })
+                }
             }
         }
+    }
+}
+
+async function getGamesDetailPage(req, res) {
+    try {
+        const game = await getGameById(req.params.id);
+        res.render('gameDetailPage', { game })
+    } catch (error) {
+        throw new Error(error.message);
     }
 }
 
@@ -47,5 +67,6 @@ module.exports = {
     getGamesIndexPage,
     getGameForm,
     postGameForm,
+    getGamesDetailPage
 
 }
