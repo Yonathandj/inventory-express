@@ -1,6 +1,6 @@
 const categoryValidator = require("../validators/categoriesValidator");
 
-const { postCategory, getCategoriesData, getCategoryDetailData } = require("../services/categoriesService");
+const { postCategory, getCategoriesData, getCategoryDetailData, deleteCategoryById } = require("../services/categoriesService");
 
 async function getCategoriesIndexPage(req, res) {
     try {
@@ -36,9 +36,22 @@ async function getCategoryDetailPage(req, res) {
     }
 }
 
+async function deleteCategory(req, res) {
+    try {
+        await deleteCategoryById(req.params.id);
+        res.redirect('/catalog/categories');
+    } catch (error) {
+        if (error.statusCode === 400) {
+            const { gamesRelatedToCategory, categoryDetail } = await getCategoryDetailData(req.params.id);
+            res.render('categoryDetailPage', { category: categoryDetail, games: gamesRelatedToCategory, error: error.message });
+        }
+    }
+}
+
 module.exports = {
     getCategoriesIndexPage,
     getFormCategory,
     postFormCategory,
-    getCategoryDetailPage
+    getCategoryDetailPage,
+    deleteCategory
 }
