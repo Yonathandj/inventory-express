@@ -34,14 +34,6 @@ async function postCategory({ name, description }) {
     return await newCategory.save();
 }
 
-async function getCategoryDetailData(_id) {
-    const gamesRelatedToCategory = await gameModel.find({ categories: _id }, { name: 1, description: 1 }).exec();
-
-    const categoryDetail = await categoryModel.findOne({ _id });
-    return { gamesRelatedToCategory, categoryDetail };
-}
-
-
 async function deleteCategoryById(_id) {
     const gamesRelatedToCategory = await gameModel.find({ categories: _id }).exec();
     if (gamesRelatedToCategory.length > 0) {
@@ -52,19 +44,18 @@ async function deleteCategoryById(_id) {
 }
 
 async function getCategoryById(_id) {
-    const category = await categoryModel.findOne({ _id }, { name: 1, description: 1 }).exec();
+    const category = await categoryModel.findOne({ _id }).exec();
     return category;
 }
 
-async function updateCategory({ _id, name, description }) {
+async function updateCategoryById({ _id, name, description }) {
     await categoryModel.updateOne({ _id }, { name, description }).exec();
 }
 
 module.exports = {
     postCategory,
     getCategoriesData,
-    getCategoryDetailData,
     deleteCategoryById,
     getCategoryById,
-    updateCategory
+    updateCategoryById
 }

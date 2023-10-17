@@ -36,7 +36,13 @@ async function postGame({ name, description, price, categories }) {
     return await newGame.save()
 }
 
+async function getGamesRelatedCategory(_id) {
+    const games = await gameModel.find({ categories: _id }, { name: 1, description: 1 }).exec();
+    return games;
+}
+
 module.exports = {
     getGameFormDataCategories,
-    postGame
+    postGame,
+    getGamesRelatedCategory
 }

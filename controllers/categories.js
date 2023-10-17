@@ -1,6 +1,7 @@
 const categoryValidator = require("../validators/categoriesValidator");
 
-const { postCategory, getCategoriesData, getCategoryDetailData, deleteCategoryById, getCategoryById, updateCategory } = require("../services/categoriesService");
+const { postCategory, getCategoriesData, deleteCategoryById, getCategoryById, updateCategoryById } = require("../services/categoriesService");
+const { getGamesRelatedCategory } = require("../services/gamesService");
 
 async function getCategoriesIndexPage(req, res) {
     try {
@@ -30,8 +31,9 @@ async function postFormCategory(req, res) {
 
 async function getCategoryDetailPage(req, res) {
     try {
-        const { gamesRelatedToCategory, categoryDetail } = await getCategoryDetailData(req.params.id);
-        res.render('categoryDetailPage', { category: categoryDetail, games: gamesRelatedToCategory });
+        const category = await getCategoryById(req.params.id);
+        const games = await getGamesRelatedCategory(req.params.id);
+        res.render('categoryDetailPage', { category, games });
     } catch (error) {
         throw new Error(error.message);
     }
@@ -43,8 +45,9 @@ async function deleteCategory(req, res) {
         res.redirect('/catalog/categories');
     } catch (error) {
         if (error.statusCode === 400) {
-            const { gamesRelatedToCategory, categoryDetail } = await getCategoryDetailData(req.params.id);
-            res.render('categoryDetailPage', { category: categoryDetail, games: gamesRelatedToCategory, error: error.message });
+            const category = await getCategoryById(req.params.id);
+            const games = await getGamesRelatedCategory(req.params.id);
+            res.render('categoryDetailPage', { category, games, error: error.message });
         }
     }
 }
@@ -58,12 +61,11 @@ async function getFormUpdateCategory(req, res) {
     }
 }
 
-async function postUpdateCategory(req, res) {
+async function postFormUpdateCategory(req, res) {
     try {
         categoryValidator(req.body);
-
-        const data = { _id: req.params.id, name: req.body.name, description: req.body.description }
-        await updateCategory(data);
+        const newCategory = { _id: req.params.id, name: req.body.name, description: req.body.description }
+        await updateCategoryById(newCategory);
         res.redirect('/catalog/categories');
     } catch (error) {
         if (error.statusCode === 400)
@@ -78,5 +80,5 @@ module.exports = {
     getCategoryDetailPage,
     deleteCategory,
     getFormUpdateCategory,
-    postUpdateCategory
+    postFormUpdateCategory
 }

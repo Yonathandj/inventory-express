@@ -1,6 +1,7 @@
+const gameValidator = require("../validators/gamesValidator");
+
 const { getGameFormDataCategories, postGame } = require("../services/gamesService");
 
-const gameValidator = require("../validators/gamesValidator");
 
 function getGamesIndexPage(req, res) {
     res.render("gamesIndexPage");
@@ -25,15 +26,19 @@ async function postGameForm(req, res) {
         res.redirect('/catalog/games')
     } catch (error) {
         if (error.statusCode === 400) {
-            const categoriesList = await getGameFormDataCategories();
-            if (req.body.categories) {
-                for (category of categoriesList) {
-                    if (req.body.categories.includes(category._id)) {
-                        category.checked = "true"
+            try {
+                const categoriesList = await getGameFormDataCategories();
+                if (req.body.categories) {
+                    for (category of categoriesList) {
+                        if (req.body.categories.includes(category._id)) {
+                            category.checked = "true"
+                        }
                     }
                 }
+                return res.render('gameForm', { game: req.body, error: error.message, categories: categoriesList });
+            } catch (error) {
+                return res.render("gameForm", { error: error.message, game: req.body })
             }
-            return res.render('gameForm', { game: req.body, error: error.message, categories: categoriesList });
         }
     }
 }
@@ -41,5 +46,6 @@ async function postGameForm(req, res) {
 module.exports = {
     getGamesIndexPage,
     getGameForm,
-    postGameForm
+    postGameForm,
+
 }
