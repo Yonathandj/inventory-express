@@ -8,8 +8,8 @@ block content
             if error
                 h2(class="text-2xl mt-5")= error
             else
-                each game in games
+                each category in categories
                     section(class="py-5")
-                        h2(class="text-2xl")= game.name
-                        p #{game.description.slice(0, 80)}...
-                        a(href=game.detailUrl class="text-sky-400") See more detail
+                        h2(class="text-2xl")= category.name
+                        p #{category.description.slice(0, 80)}...
+                        a(href=category.detailUrl class="text-sky-400") See more detail

@@ -5,6 +5,7 @@ const gameModelSchema = new mongoose.Schema({
     name: { type: String, required: true, minLength: 3 },
     description: { type: String, required: true, minLength: 100 },
     price: { type: Number, required: true },
+    categories: [{ type: mongoose.Schema.Types.String, ref: 'Category' }],
     createdAt: { type: Date, required: true },
     updatedAt: { type: Date, required: true },
 })

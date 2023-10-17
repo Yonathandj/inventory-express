@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    div(class="p-10")
+        h2(class="text-3xl")= category.name
+        p(class="text-lg max-w-[80%]")= category.description
+        p(class="text-sm text-yellow-200") Created : #{category.createdAt}
+        p(class="text-sm text-yellow-200") Updated : #{category.updatedAt}
+
+        if games.length > 0
+            each game in games
+                h2= game.name
+                p= game.description
+        else 
+            h2(class="text-lg text-red-600") No games related to the category

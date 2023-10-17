@@ -1,16 +1,17 @@
 const { nanoid } = require("nanoid");
 
 const categoryModel = require("../models/categoriesModel");
+const gameModel = require('../models/gamesModel');
 
 const invariantError = require("../errors/invariantError");
 const notFoundError = require('../errors/notFoundError');
 
 async function getCategoriesData() {
-    const games = await categoryModel.find({}, { name: 1, description: 1 }).exec();
-    if (games.length === 0) {
+    const categories = await categoryModel.find({}, { name: 1, description: 1 }).exec();
+    if (categories.length === 0) {
         throw new notFoundError("Category list not exist yet. Let's add some new category", 404);
     }
-    return games;
+    return categories;
 }
 
 async function postCategory({ name, description }) {
@@ -33,7 +34,16 @@ async function postCategory({ name, description }) {
     return await newCategory.save();
 }
 
+async function getCategoryDetailData(_id) {
+    const gamesRelatedToCategory = await gameModel.find({ categories: _id }, { name: 1, description: 1 }).exec();
+
+    const categoryDetail = await categoryModel.findOne({ _id });
+    return { gamesRelatedToCategory, categoryDetail };
+}
+
+
 module.exports = {
     postCategory,
-    getCategoriesData
+    getCategoriesData,
+    getCategoryDetailData
 }

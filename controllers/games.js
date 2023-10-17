@@ -21,11 +21,7 @@ async function getGameForm(req, res) {
 async function postGameForm(req, res) {
     try {
         gameValidator(req.body);
-
-        // BELUM DI SAVE KE DATABASE
-        await postGame(req.body)
-        // BELUM DI SAVE KE DATABASE
-
+        await postGame(req.body);
         res.redirect('/catalog/games')
     } catch (error) {
         if (error.statusCode === 400) {
