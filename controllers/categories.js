@@ -1,9 +1,16 @@
 const categoryValidator = require("../validators/categoriesValidator");
 
-const { postCategory } = require("../services/categoriesService");
+const { postCategory, getCategoriesData } = require("../services/categoriesService");
 
-function getCategoriesIndexPage(req, res) {
-    res.render("categoriesIndexPage");
+async function getCategoriesIndexPage(req, res) {
+    try {
+        const games = await getCategoriesData()
+        res.render("categoriesIndexPage", { games });
+    } catch (error) {
+        if (error.statusCode === 404) {
+            return res.render("categoriesIndexPage", { error: error.message });
+        }
+    }
 }
 
 function getFormCategory(req, res) {
