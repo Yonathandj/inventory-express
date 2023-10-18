@@ -11,6 +11,8 @@ router.route('/games/new')
 router.get('/games/:id', getGamesDetailPage)
 router.post('/games/delete/:id', deleteGame);
 
-router.get('/games/update/:id', getUpdateForm);
+router.route('/games/update/:id')
+    .get(getUpdateForm)
+    .post(postUpdateForm)
 
 module.exports = router;
