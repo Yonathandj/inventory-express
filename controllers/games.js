@@ -3,15 +3,13 @@ const gameValidator = require("../validators/gamesValidator");
 const { postGame, getGamesData, getGameById, deleteGameById, updateGameById } = require("../services/gamesService");
 const { getCategoriesData } = require("../services/categoriesService");
 
-
 async function getGamesIndexPage(req, res) {
     try {
         const games = await getGamesData();
         res.render("gamesIndexPage", { games });
     } catch (error) {
         if (error.statusCode === 404) {
-            res.render("gamesIndexPage", { error: error.message });
-
+            return res.render("gamesIndexPage", { error: error.message });
         }
     }
 }
@@ -24,7 +22,6 @@ async function getGameForm(req, res) {
         if (error.statusCode === 404) {
             return res.render("gameForm", { error: error.message })
         }
-
     }
 }
 
@@ -59,7 +56,9 @@ async function getGamesDetailPage(req, res) {
         const game = await getGameById(req.params.id);
         res.render('gameDetailPage', { game })
     } catch (error) {
-        throw new Error(error.message);
+        if (error.statusCode === 404) {
+            res.redirect('/catalog/games');
+        }
     }
 }
 
@@ -75,10 +74,10 @@ async function deleteGame(req, res) {
 async function getUpdateForm(req, res) {
     try {
         const game = await getGameById(req.params.id);
-        const newMappedGameToGetId = game.categories.map((g => g._id));
+        const mappedGameToGetId = game.categories.map((g => g._id));
         const categoriesList = await getCategoriesData();
         for (category of categoriesList) {
-            if (newMappedGameToGetId.includes(category._id)) {
+            if (mappedGameToGetId.includes(category._id)) {
                 category.checked = true
             }
         }

@@ -1,7 +1,6 @@
 const { nanoid } = require("nanoid");
 
 const categoryModel = require("../models/categoriesModel");
-const gameModel = require('../models/gamesModel');
 
 const invariantError = require("../errors/invariantError");
 const notFoundError = require('../errors/notFoundError');
