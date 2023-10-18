@@ -1,6 +1,6 @@
 const gameValidator = require("../validators/gamesValidator");
 
-const { postGame, getGamesData, getGameById, deleteGameById } = require("../services/gamesService");
+const { postGame, getGamesData, getGameById, deleteGameById, updateGameById } = require("../services/gamesService");
 const { getCategoriesData } = require("../services/categoriesService");
 
 
@@ -84,7 +84,37 @@ async function getUpdateForm(req, res) {
         }
         return res.render('gameForm', { game, categories: categoriesList });
     } catch (error) {
-        throw new Error(error.message);
+        if (error.statusCode === 404) {
+            return res.render("gameForm", { error: error.message, game })
+        }
+    }
+}
+
+async function postUpdateForm(req, res) {
+    try {
+        gameValidator(req.body);
+        const { name, description, price, categories } = req.body;
+        const _id = req.params.id;
+        await updateGameById({ _id, name, description, price, categories });
+        res.redirect('/catalog/games')
+    } catch (error) {
+        if (error.statusCode === 400) {
+            try {
+                const categoriesList = await getCategoriesData();
+                if (req.body.categories) {
+                    for (category of categoriesList) {
+                        if (req.body.categories.includes(category._id)) {
+                            category.checked = "true"
+                        }
+                    }
+                }
+                return res.render('gameForm', { game: req.body, error: error.message, categories: categoriesList });
+            } catch (error) {
+                if (error.statusCode === 404) {
+                    return res.render("gameForm", { error: error.message, game: req.body })
+                }
+            }
+        }
     }
 }
 
@@ -94,5 +124,6 @@ module.exports = {
     postGameForm,
     getGamesDetailPage,
     deleteGame,
-    getUpdateForm
+    getUpdateForm,
+    postUpdateForm
 }

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getGamesIndexPage, getGameForm, postGameForm, getGamesDetailPage, deleteGame, getUpdateForm } = require('../controllers/games');
+const { getGamesIndexPage, getGameForm, postGameForm, getGamesDetailPage, deleteGame, getUpdateForm, postUpdateForm } = require('../controllers/games');
 
 router.get('/games', getGamesIndexPage);
 router.route('/games/new')

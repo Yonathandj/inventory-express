@@ -49,10 +49,15 @@ async function deleteGameById(_id) {
     await gameModel.deleteOne({ _id }).exec();
 }
 
+async function updateGameById({ _id, name, description, price, categories }) {
+    await gameModel.updateOne({ _id }, { name, description, price, categories }).exec();
+}
+
 module.exports = {
     getGamesData,
     postGame,
     getGamesRelatedCategory,
     getGameById,
-    deleteGameById
+    deleteGameById,
+    updateGameById
 }
