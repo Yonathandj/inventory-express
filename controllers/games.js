@@ -72,10 +72,27 @@ async function deleteGame(req, res) {
     }
 }
 
+async function getUpdateForm(req, res) {
+    try {
+        const game = await getGameById(req.params.id);
+        const newMappedGameToGetId = game.categories.map((g => g._id));
+        const categoriesList = await getCategoriesData();
+        for (category of categoriesList) {
+            if (newMappedGameToGetId.includes(category._id)) {
+                category.checked = true
+            }
+        }
+        return res.render('gameForm', { game, categories: categoriesList });
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
 module.exports = {
     getGamesIndexPage,
     getGameForm,
     postGameForm,
     getGamesDetailPage,
-    deleteGame
+    deleteGame,
+    getUpdateForm
 }

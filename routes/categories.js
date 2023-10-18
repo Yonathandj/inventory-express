@@ -11,6 +11,8 @@ router.route('/categories/new')
 router.get('/categories/:id', getCategoryDetailPage);
 
 router.post('/categories/delete/:id', deleteCategory);
+
+// BISA DIPERBAIKI
 router.get('/categories/update/:id', getFormUpdateCategory)
 router.post('/categories/post-update/:id', postFormUpdateCategory)
 
