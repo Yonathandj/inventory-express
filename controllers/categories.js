@@ -3,6 +3,8 @@ const categoryValidator = require("../validators/categoriesValidator");
 const { postCategory, getCategoriesData, deleteCategoryById, getCategoryById, updateCategoryById } = require("../services/categoriesService");
 const { getGamesRelatedCategory } = require("../services/gamesService");
 
+const invariantError = require('../errors/invariantError');
+
 async function getCategoriesIndexPage(req, res) {
     try {
         const categories = await getCategoriesData()
@@ -43,17 +45,17 @@ async function getCategoryDetailPage(req, res) {
 
 async function deleteCategory(req, res) {
     try {
-        await deleteCategoryById(req.params.id);
         const games = await getGamesRelatedCategory(req.params.id);
         if (games.length > 0) {
             throw new invariantError('There are games related to this category. You can delete those games first', 400);
         }
+        await deleteCategoryById(req.params.id);
         res.redirect('/catalog/categories');
     } catch (error) {
         if (error.statusCode === 400) {
             const category = await getCategoryById(req.params.id);
             const games = await getGamesRelatedCategory(req.params.id);
-            res.render('categoryDetailPage', { category, games, error: error.message });
+            return res.render('categoryDetailPage', { category, games, error: error.message });
         }
     }
 }
