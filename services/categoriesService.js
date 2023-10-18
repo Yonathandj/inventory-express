@@ -18,11 +18,9 @@ async function postCategory({ name, description }) {
     if (existingCategory !== null) {
         throw new invariantError("The category you trying to add is exist", 400)
     }
-
     const _id = `category-${nanoid(16)}`;
     const createdAt = new Date();
     const updatedAt = createdAt;
-
     const newCategory = new categoryModel({
         _id,
         name,
@@ -33,13 +31,16 @@ async function postCategory({ name, description }) {
     return await newCategory.save();
 }
 
-async function deleteCategoryById(_id) {
-    await categoryModel.deleteOne({ _id }).exec();
-}
-
 async function getCategoryById(_id) {
     const category = await categoryModel.findOne({ _id }).exec();
+    if (category === null) {
+        throw new notFoundError('category you search not found', 404);
+    }
     return category;
+}
+
+async function deleteCategoryById(_id) {
+    await categoryModel.deleteOne({ _id }).exec();
 }
 
 async function updateCategoryById({ _id, name, description }) {

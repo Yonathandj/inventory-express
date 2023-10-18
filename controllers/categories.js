@@ -35,7 +35,9 @@ async function getCategoryDetailPage(req, res) {
         const games = await getGamesRelatedCategory(req.params.id);
         res.render('categoryDetailPage', { category, games });
     } catch (error) {
-        throw new Error(error.message);
+        if (error.statusCode === 404) {
+            return res.redirect('/catalog/categories');
+        }
     }
 }
 
@@ -59,7 +61,7 @@ async function deleteCategory(req, res) {
 async function getFormUpdateCategory(req, res) {
     try {
         const category = await getCategoryById(req.params.id);
-        res.render('categoryForm', { category, url: `catalog/categories/post-update/${category._id}` })
+        res.render('categoryForm', { category })
     } catch (error) {
         throw new Error(error.message);
     }
@@ -68,8 +70,9 @@ async function getFormUpdateCategory(req, res) {
 async function postFormUpdateCategory(req, res) {
     try {
         categoryValidator(req.body);
-        const newCategory = { _id: req.params.id, name: req.body.name, description: req.body.description }
-        await updateCategoryById(newCategory);
+        const { name, description } = req.body;
+        const _id = req.params.id
+        await updateCategoryById({ _id, name, description });
         res.redirect('/catalog/categories');
     } catch (error) {
         if (error.statusCode === 400)

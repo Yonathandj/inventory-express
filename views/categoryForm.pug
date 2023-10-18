@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    form(action=`${url === undefined ? "" : '/catalog/categories/post-update/' + category._id}`, method="post" class="p-5") 
+    form(action="" method="post" class="p-5") 
         section(class="max-w-[80%] flex flex-col gap-1")
             label(for="name" class="text-xl") Category
             input(type="text" id="name" placeholder="Enter category name" name="name" required="true" autoComplete="off" class="text-slate-800 p-2 rounded-sm" value=(category===undefined ? "" : category.name))
