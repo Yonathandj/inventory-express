@@ -46,7 +46,8 @@ async function deleteGameById(_id) {
 }
 
 async function updateGameById({ _id, name, description, price, categories }) {
-    await gameModel.updateOne({ _id }, { name, description, price, categories }).exec();
+    const updatedAt = new Date();
+    await gameModel.updateOne({ _id }, { name, description, price, categories, updatedAt }).exec();
 }
 
 async function getGamesRelatedCategory(_id) {

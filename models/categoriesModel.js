@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const { DateTime } = require('luxon');
+
 const categoryModelSchema = new mongoose.Schema({
     _id: { type: String, required: true },
     name: { type: String, required: true, minLength: 5 },
@@ -10,6 +12,13 @@ const categoryModelSchema = new mongoose.Schema({
 
 categoryModelSchema.virtual('detailUrl').get(function () {
     return `/catalog/categories/${this._id}`;
+});
+
+categoryModelSchema.virtual('createdFormatted').get(function () {
+    return DateTime.fromJSDate(this.createdAt).toLocaleString(DateTime.DATE_MED);
+});
+categoryModelSchema.virtual('updatedFormatted').get(function () {
+    return DateTime.fromJSDate(this.updatedAt).toLocaleString(DateTime.DATE_MED);
 });
 
 module.exports = mongoose.model('Category', categoryModelSchema);

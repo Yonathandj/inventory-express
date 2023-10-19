@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+// const { DateTime } = require('luxon')
 
 const gameModelSchema = new mongoose.Schema({
     _id: { type: String, required: true },
@@ -13,5 +14,12 @@ const gameModelSchema = new mongoose.Schema({
 gameModelSchema.virtual('detailUrl').get(function () {
     return `/catalog/games/${this._id}`
 })
+
+gameModelSchema.virtual('createdFormatted').get(function () {
+    return DateTime.fromJSDate(this.createdAt).toLocaleString(DateTime.DATE_MED);
+});
+gameModelSchema.virtual('updatedFormatted').get(function () {
+    return DateTime.fromJSDate(this.updatedAt).toLocaleString(DateTime.DATE_MED);
+});
 
 module.exports = mongoose.model('Game', gameModelSchema);

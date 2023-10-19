@@ -44,7 +44,8 @@ async function deleteCategoryById(_id) {
 }
 
 async function updateCategoryById({ _id, name, description }) {
-    await categoryModel.updateOne({ _id }, { name, description }).exec();
+    const updatedAt = new Date();
+    await categoryModel.updateOne({ _id }, { name, description, updatedAt }).exec();
 }
 
 module.exports = {
