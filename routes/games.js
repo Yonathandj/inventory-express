@@ -1,3 +1,4 @@
+const { nanoid } = require('nanoid');
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
@@ -9,7 +10,7 @@ const storage = multer.diskStorage({
         cb(null, path.join(__dirname, "..", 'public/gameImages'));
     },
     filename: function (req, file, cb) {
-        cb(null, +new Date() + "-" + file.originalname)
+        cb(null, nanoid(16) + "-" + file.originalname)
     }
 })
 

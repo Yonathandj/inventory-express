@@ -13,7 +13,7 @@ block content
             input(type="number" placeholder="Enter game price" id="price" name="price" value=(game===undefined ? '' : game.price) required="true" autoComplete="off" class="p-2 text-slate-800")
         section(class="max-w-[80%] flex flex-col mt-2") 
             label(for="gameImage" class="text-xl mb-2") Game image
-            input(type="file" placeholder="Enter game image" id="gameImage" name="gameImage" class="text-slate-200")
+            input(type="file" placeholder="Enter game image" id="gameImage" name="gameImage" class="text-slate-200" required="true")
         section(class="max-w-[80%] flex items-center gap-2 mt-2") 
             label(for="categories" class="text-xl") List category : 
             if categories

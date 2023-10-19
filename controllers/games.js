@@ -1,7 +1,7 @@
 const gameValidator = require("../validators/gamesValidator");
-
 const { postGame, getGamesData, getGameById, deleteGameById, updateGameById } = require("../services/gamesService");
 const { getCategoriesData } = require("../services/categoriesService");
+const removeValidationErrorImage = require("../lib/removeValidationErrorImage");
 
 async function getGamesIndexPage(req, res) {
     try {
@@ -27,7 +27,8 @@ async function getGameForm(req, res) {
 
 async function postGameForm(req, res) {
     try {
-        gameValidator({ mimeType: req.file.mimetype, ...req.body });
+        const { mimetype } = req.file
+        gameValidator({ mimetype, ...req.body });
         await postGame(req.body);
         res.redirect('/catalog/games')
     } catch (error) {
@@ -41,6 +42,7 @@ async function postGameForm(req, res) {
                         }
                     }
                 }
+                removeValidationErrorImage(req.file.filename)
                 return res.render('gameForm', { game: req.body, error: error.message, categories: categoriesList });
             } catch (error) {
                 if (error.statusCode === 404) {
