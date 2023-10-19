@@ -1,6 +1,6 @@
 extends layout
 
 block content
-  div(class="flex flex-col justify-center items-center p-2")
-    h1(class="mt-20 text-4xl text-center") Something went wrong
-    a(href="/" class="mt-2 text-sky-600") back to home
+  h1= message
+  h2= error.status
+  pre #{error.stack}
