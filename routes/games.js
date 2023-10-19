@@ -28,6 +28,6 @@ router.post('/games/delete/:id', deleteGame);
 
 router.route('/games/update/:id')
     .get(getUpdateForm)
-    .post(postUpdateForm)
+    .post(upload.single("gameImage"), postUpdateForm)
 
 module.exports = router;

@@ -93,10 +93,15 @@ async function getUpdateForm(req, res) {
 
 async function postUpdateForm(req, res) {
     try {
-        gameValidator(req.body);
-        const { name, description, price, categories } = req.body;
         const _id = req.params.id;
-        await updateGameById({ _id, name, description, price, categories });
+        const { mimetype, filename } = req.file
+        gameValidator({ mimetype, ...req.body });
+
+        const game = await getGameById(_id);
+        console.log('masuk sini')
+
+        await updateGameById({ _id, ...req.body, filename });
+        removeValidationErrorImage(game.filenameImage);
         res.redirect('/catalog/games')
     } catch (error) {
         if (error.statusCode === 400) {
