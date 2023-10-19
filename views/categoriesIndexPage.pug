@@ -1,15 +1,15 @@
 extends layout
 
 block content
-    div(class=" p-10 sm:p-20")
+    div(class="p-10 sm:p-20 flex flex-col items-center")
         a(href="/catalog/categories/new" class="px-4 py-2 bg-sky-600 rounded-sm") Create new category 
-        h2(class="text-4xl mt-5 p-2 text-center") Categories Page
-        section
+        h2(class="text-4xl my-5 p-2 text-center") Categories Page
+        section(class="flex flex-col gap-6")
             if error
                 h2(class="text-2xl mt-5")= error
             else
                 each category in categories
-                    section(class="py-5")
-                        h2(class="text-2xl")= category.name
-                        p #{category.description.slice(0, 80)}...
+                    section(class="p-3 bg-slate-700 rounded-md")
+                        h2(class="text-3xl")= category.name
+                        p(class="max-w-[80%]") #{category.description.slice(0, 80)}...
                         a(href=category.detailUrl class="text-sky-400") See more detail

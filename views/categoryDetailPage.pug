@@ -2,19 +2,21 @@ extends layout
 
 block content
     div(class="p-10 mx-auto")
-        h2(class="text-2xl") Category genre : #{category.name}
-        p Category description : #{category.description}
-        p(class="text-sm text-yellow-400") Created : #{category.createdAt}
-        p(class="text-sm text-yellow-400") Updated : #{category.updatedAt}
+        h2(class="text-2xl") Category : #{category.name}
+        p(class="sm:max-w-[60%]") Description : #{category.description}
+        p(class="text-sm text-sky-400 mt-2") Created : #{category.createdAt}
+        p(class="text-sm text-sky-400") Updated : #{category.updatedAt}
 
         if games.length > 0 
-            h2(class="text-2xl text-center mt-5") List Of Games
+            h2(class="text-2xl text-center mt-2 sm:mt-6") List Of Games
 
-        div(class="p-5")
+        div(class="mt-5 flex flex-col gap-6 items-center")
             if games.length > 0
                 each game in games
-                    h2(class="text-xl")= game.name
-                    p(class="text-sm")= game.description
+                    section(class="bg-slate-800 p-4 rounded-md")
+                        h2(class="text-2xl")= game.name
+                        p(class="max-w-[80%]") #{game.description.slice(0, 80)}...
+                        a(href=game.detailUrl class="text-sky-600") See detail game 
             else 
                 h2(class="text-lg text-red-600") No games related to the category
 
@@ -24,5 +26,5 @@ block content
         
         a(href=`/catalog/categories/update/${category._id}` class="px-4 py-2 bg-yellow-600 rounded-sm") Edit category
 
-    if error    
-        h2(class="text-xl text-red-600 px-10 py-5")= error
+        if error    
+            h2(class="text-xl text-red-600 px-10 py-5")= error
