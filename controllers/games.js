@@ -27,9 +27,9 @@ async function getGameForm(req, res) {
 
 async function postGameForm(req, res) {
     try {
-        const { mimetype } = req.file
+        const { mimetype, filename } = req.file
         gameValidator({ mimetype, ...req.body });
-        await postGame(req.body);
+        await postGame({ filename, ...req.body });
         res.redirect('/catalog/games')
     } catch (error) {
         if (error.statusCode === 400) {

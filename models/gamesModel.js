@@ -1,3 +1,5 @@
+const path = require('path');
+
 const mongoose = require('mongoose');
 const { DateTime } = require('luxon')
 
@@ -9,6 +11,7 @@ const gameModelSchema = new mongoose.Schema({
     categories: [{ type: mongoose.Schema.Types.String, ref: 'Category' }],
     createdAt: { type: Date, required: true },
     updatedAt: { type: Date, required: true },
+    filenameImage: { type: String, required: true }
 })
 
 gameModelSchema.virtual('detailUrl').get(function () {
@@ -20,6 +23,10 @@ gameModelSchema.virtual('createdFormatted').get(function () {
 });
 gameModelSchema.virtual('updatedFormatted').get(function () {
     return DateTime.fromJSDate(this.updatedAt).toLocaleString(DateTime.DATE_MED);
+});
+
+gameModelSchema.virtual('imageUrl').get(function () {
+    return `/gameImages/${this.filenameImage}`
 });
 
 module.exports = mongoose.model('Game', gameModelSchema);

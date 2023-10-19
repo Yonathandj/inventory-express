@@ -13,7 +13,7 @@ async function getGamesData() {
     return games;
 }
 
-async function postGame({ name, description, price, categories }) {
+async function postGame({ filename, name, description, price, categories }) {
     const existingGame = await gameModel.findOne({ name }).exec();
     if (existingGame !== null) {
         throw new invariantError('Game already exist', 400);
@@ -29,6 +29,7 @@ async function postGame({ name, description, price, categories }) {
         categories,
         createdAt,
         updatedAt,
+        filenameImage: filename
     })
     return await newGame.save()
 }
